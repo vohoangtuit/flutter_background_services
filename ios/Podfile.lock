@@ -1,0 +1,40 @@
+PODS:
+  - background_fetch (1.3.7):
+    - Flutter
+  - Flutter (1.0.0)
+  - flutter_local_notifications (0.0.1):
+    - Flutter
+  - permission_handler_apple (9.3.0):
+    - Flutter
+  - workmanager (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - background_fetch (from `.symlinks/plugins/background_fetch/ios`)
+  - Flutter (from `Flutter`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - workmanager (from `.symlinks/plugins/workmanager/ios`)
+
+EXTERNAL SOURCES:
+  background_fetch:
+    :path: ".symlinks/plugins/background_fetch/ios"
+  Flutter:
+    :path: Flutter
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
+  workmanager:
+    :path: ".symlinks/plugins/workmanager/ios"
+
+SPEC CHECKSUMS:
+  background_fetch: 39f11371c0dce04b001c4bfd5e782bcccb0a85e2
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_local_notifications: df98d66e515e1ca797af436137b4459b160ad8c9
+  permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
+  workmanager: 0afdcf5628bbde6924c21af7836fed07b42e30e6
+
+PODFILE CHECKSUM: e30f02f9d1c72c47bb6344a0a748c9d268180865
+
+COCOAPODS: 1.16.2
