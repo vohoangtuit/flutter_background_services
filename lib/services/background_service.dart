@@ -49,7 +49,7 @@ class BackgroundService{
   Future<void> executeScheduledFunction()async{
     print("✅ Function chạy mỗi 15 phút!");
     final now = DateTime.now();
-    final lastRun = DateTime(2025, 2, 25); // ✅ Thay bằng ngày chạy lần trước
+    final lastRun = DateTime(2025, 2, 27); // ✅ Thay bằng ngày chạy lần trước
     final difference = now.difference(lastRun).inDays;
 
     if (difference % 2 == 0) { // ✅ Kiểm tra nếu đã đủ 2 ngày
