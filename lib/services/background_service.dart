@@ -22,7 +22,14 @@ class BackgroundService{
   Future<void> init() async {
     await _requestNotificationPermission();
     await _initializeNotifications();
-    _initWorkManager();
+
+
+    // ✅ Khởi tạo WorkManager (Android) & Background Fetch (iOS)
+    if (Platform.isAndroid) {
+      await _initWorkManager();
+    } else if (Platform.isIOS) {
+      await _initBackgroundFetch();
+    }
   }
 
   // 📌 Yêu cầu quyền gửi thông báo (Android 13+)
@@ -42,8 +49,16 @@ class BackgroundService{
   Future<void> executeScheduledFunction()async{
     print("✅ Function chạy mỗi 15 phút!");
     final now = DateTime.now();
-    _showNotification("Function chạy mỗi 15 phút!","Chạy lúc :  ${now.hour}:${now.minute}:${now.second}");
+    final lastRun = DateTime(2025, 2, 25); // ✅ Thay bằng ngày chạy lần trước
+    final difference = now.difference(lastRun).inDays;
 
+    if (difference % 2 == 0) { // ✅ Kiểm tra nếu đã đủ 2 ngày
+      print("✅ Chạy function sau mỗi 2 ngày!");
+      _showNotification("Function chạy mỗi 2 ngày ","Chạy lúc :  ${now.hour}:${now.minute}:${now.second}");
+      // 🛠️ Gọi API, cập nhật DB hoặc thực hiện logic nền tại đây
+    } else {
+      print("⏳ Chưa tới ngày chạy...");
+    }
 
     // todo check other function and call show notification
     // if (now.hour == 11 && now.minute == 20) {
@@ -85,30 +100,36 @@ class BackgroundService{
     );
   }
 
+
+  // 📌 Khởi tạo WorkManager để chạy mỗi 2 ngày (Android)
   _initWorkManager()async{
     Workmanager().initialize(callbackDispatcher, isInDebugMode: false);//todo: callbackDispatcher from main
     ///
     Workmanager().registerPeriodicTask(/// todo: register task
       taskName,
       taskName,
-      frequency: Duration(minutes: 15),/// todo : time recall task, minimum 15 minutes
-     // frequency: Duration(day: 1),
+     // frequency: Duration(minutes: 15),/// todo : time recall task, minimum 15 minutes
+      frequency: Duration(days:2),// ✅ 2 mỗi 2 ngày
      // frequency: Duration(hours: 48),
       constraints: Constraints(
         networkType: wm.NetworkType.not_required,
         requiresBatteryNotLow: true,
       ),
     );
-    if (Platform.isIOS) {
-      BackgroundFetch.configure(
-        BackgroundFetchConfig(
-          minimumFetchInterval: 15, // ✅ Chạy mỗi 15 phút (tùy theo hệ thống)
-          stopOnTerminate: false,
-          enableHeadless: true,
-        ),
-        backgroundFetchHeadlessTask,
-      );
-    }
-  }
 
+  }
+// 📌 Khởi tạo Background Fetch để chạy nền trên iOS (không đảm bảo 3 ngày)
+  Future<void> _initBackgroundFetch() async {
+    BackgroundFetch.configure(
+      BackgroundFetchConfig(
+        minimumFetchInterval: 15, // ✅ iOS không hỗ trợ đặt chính xác 3 ngày
+        stopOnTerminate: false,
+        enableHeadless: true,
+      ),
+          (String taskId) async {
+        await executeScheduledFunction();
+        BackgroundFetch.finish(taskId);
+      },
+    );
+  }
 }

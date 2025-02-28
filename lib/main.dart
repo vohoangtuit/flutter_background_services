@@ -41,11 +41,7 @@ void callbackDispatcher() { /// should set here
   });
 }
 
-void backgroundFetchHeadlessTask(String taskId) async {
-  print("✅ Background Fetch event received on iOS!");
-  BackgroundService().executeScheduledFunction();
-  BackgroundFetch.finish(taskId);
-}
+
 
 // - export PATH="/Users/vohoangtuit/DATA/DEVELOP/AndroidStudio/flutter_sdk/flutter/bin:$PATH" // change path
 //   - export PATH="/Users/admin/VO_HOANG_TU/dev/AndroidStudio/sdk/flutter/bin:$PATH"
